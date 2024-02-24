@@ -24,7 +24,7 @@ parser.add_argument(
 
 def head_to(x, y, draw=True):
     x = x + args.xhome
-    y = y+ args.yhome
+    y = y + args.yhome
     if draw:
         string = "V[" + str(round(x)) + "," + str(round(y)) + "]"
     else:
@@ -65,9 +65,9 @@ if args.scale is not None:
         origWidth = svg_attr['viewBox'].split(' ')[2]
         origHeight = svg_attr['viewBox'].split(' ')[3]
     elif 'width' in svg_attr:
-        origWidth = re.sub('[A-Za-z]','',svg_attr['width'])
-        origHeight = re.sub('[A-Za-z]','',svg_attr['height']) 
-    if args.scale == 0: #'width' in svg_attr and
+        origWidth = re.sub('[A-Za-z]', '', svg_attr['width'])
+        origHeight = re.sub('[A-Za-z]', '', svg_attr['height'])
+    if args.scale == 0:  # 'width' in svg_attr and
         origWidthFloat = float(origWidth)
         origHeightFloat = float(origHeight)
         if (windowSize['width'] / origWidthFloat) < (windowSize['height'] / origHeightFloat):
@@ -82,7 +82,7 @@ if args.scale is not None:
     attrs = []
     for i, (path, attribute) in enumerate(zip(orig_paths, orig_attrs)):
         new_path = path_transform(path, parse_transform(
-            'scale('+str(scaleRatio)+' '+str(scaleRatio)+')'))
+            'scale(' + str(scaleRatio) + ' ' + str(scaleRatio) + ')'))
         orig_attrs[i]['d'] = new_path.d()  # to make it consistent
         paths.append(new_path)
         attrs.append(orig_attrs[i])
@@ -96,8 +96,8 @@ for path in paths:
     for subpaths in path.continuous_subpaths():
         points = []
         for seg in subpaths:
-            interp_num = ceil(seg.length()/seg_res)
-            points.append(seg.point(np.arange(interp_num)/interp_num))
+            interp_num = ceil(seg.length() / seg_res)
+            points.append(seg.point(np.arange(interp_num) / interp_num))
         points = np.concatenate(points)
         points = np.append(points, points[0])
         poly.append(points)
