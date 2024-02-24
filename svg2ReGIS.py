@@ -55,6 +55,20 @@ def draw_multipolygon(mpoly, fill=False):
     return stringLocal
 
 
+def filter_points(points):
+    diff = np.diff(points)
+    rounded = diff.round(3)
+    filtered = [points[0]]
+    last = None
+    for d, r in zip(diff, rounded):
+        if r == last:
+            filtered[-1] += d
+        else:
+            filtered.append(d)
+            last = r
+    return np.cumsum(filtered)
+
+
 args = parser.parse_args()
 
 svg_file = args.svgfile
@@ -89,7 +103,7 @@ if args.scale is not None:
 else:
     paths = orig_paths
     attrs = orig_attrs
-seg_res = 5
+seg_res = 1
 polys = []
 for path in paths:
     poly = []
@@ -99,6 +113,7 @@ for path in paths:
             interp_num = ceil(seg.length() / seg_res)
             points.append(seg.point(np.arange(interp_num) / interp_num))
         points = np.concatenate(points)
+        points = filter_points(points)
         if subpaths.isclosed():
             points = np.append(points, points[0])
         poly.append(points)
