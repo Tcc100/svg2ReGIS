@@ -99,7 +99,8 @@ for path in paths:
             interp_num = ceil(seg.length() / seg_res)
             points.append(seg.point(np.arange(interp_num) / interp_num))
         points = np.concatenate(points)
-        points = np.append(points, points[0])
+        if subpaths.isclosed():
+            points = np.append(points, points[0])
         poly.append(points)
     polys.append([[(p.real, p.imag) for p in pl] for pl in poly])
 
